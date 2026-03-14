@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Farm AI Assistant</title>
+
+<style>
+
+body{
+font-family: Arial;
+background:#f2f4f6;
+padding:40px;
+}
+
+h1{
+text-align:center;
+margin-bottom:40px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+}
+
+.cards{
+display:flex;
+gap:20px;
+justify-content:center;
+margin-bottom:30px;
+}
+
+.card{
+flex:1;
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 4px 15px rgba(0,0,0,0.1);
+cursor:pointer;
+text-align:center;
+transition:0.2s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.section{
+display:none;
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 4px 20px rgba(0,0,0,0.1);
+margin-top:20px;
+}
+
+input{
+width:100%;
+padding:8px;
+margin:6px 0;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+button{
+background:#27ae60;
+color:white;
+border:none;
+padding:10px;
+margin-top:10px;
+cursor:pointer;
+border-radius:5px;
+width:100%;
+}
+
+button:hover{
+background:#219150;
+}
+
+.result{
+margin-top:15px;
+padding:10px;
+background:#ecf9f1;
+border-radius:5px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>🌾 Farm AI Assistant</h1>
+
+<div class="container">
+
+<div class="cards">
+
+<div class="card" onclick="showSection('crop')">
+<h3>🌱 Crop Recommendation</h3>
+<p>Find best crop based on soil data</p>
+</div>
+
+<div class="card" onclick="showSection('disease')">
+<h3>🦠 Disease Detection</h3>
+<p>Upload plant leaf image</p>
+</div>
+
+<div class="card" onclick="showSection('guide')">
+<h3>📘 Farmer Guide</h3>
+<p>Generate AI farming guide</p>
+</div>
+
+</div>
+
+<!-- Crop Section -->
+
+<div id="crop" class="section">
+
+<h3>Crop Recommendation</h3>
+
+<input id="district" placeholder="District">
+<input id="soil_color" placeholder="Soil Color">
+<input id="nitrogen" placeholder="Nitrogen">
+<input id="phosphorus" placeholder="Phosphorus">
+<input id="potassium" placeholder="Potassium">
+<input id="ph" placeholder="pH">
+<input id="rainfall" placeholder="Rainfall">
+<input id="temperature" placeholder="Temperature">
+
+<button onclick="predictCrop()">Predict Crop</button>
+
+<div class="result" id="crop_result"></div>
+
+</div>
+
+<!-- Disease Section -->
+
+<div id="disease" class="section">
+
+<h3>Disease Detection</h3>
+
+<input type="file" id="image">
+
+<button onclick="detectDisease()">Detect Disease</button>
+
+<div class="result" id="disease_result"></div>
+
+</div>
+
+<!-- Farmer Guide Section -->
+
+<div id="guide" class="section">
+
+<h3>AI Farming Guide</h3>
+
+<input id="guide_crop" placeholder="Crop Name">
+<input id="guide_district" placeholder="District">
+
+<button onclick="generateGuide()">Generate Guide</button>
+
+<div class="result" id="guide_result"></div>
+
+</div>
+
+</div>
+
+<script>
+
+function showSection(section){
+
+document.getElementById("crop").style.display="none"
+document.getElementById("disease").style.display="none"
+document.getElementById("guide").style.display="none"
+
+document.getElementById(section).style.display="block"
+
+}
+
+async function predictCrop(){
+
+let district=document.getElementById("district").value
+let soil_color=document.getElementById("soil_color").value
+let nitrogen=document.getElementById("nitrogen").value
+let phosphorus=document.getElementById("phosphorus").value
+let potassium=document.getElementById("potassium").value
+let ph=document.getElementById("ph").value
+let rainfall=document.getElementById("rainfall").value
+let temperature=document.getElementById("temperature").value
+
+let url=`/predict_crop?district=${district}&soil_color=${soil_color}&nitrogen=${nitrogen}&phosphorus=${phosphorus}&potassium=${potassium}&ph=${ph}&rainfall=${rainfall}&temperature=${temperature}`
+
+let response=await fetch(url,{method:"POST"})
+let data=await response.json()
+
+document.getElementById("crop_result").innerText =
+"Recommended Crop: " + data.recommended_crop
+
+}
+
+async function detectDisease(){
+
+let file=document.getElementById("image").files[0]
+
+let formData=new FormData()
+formData.append("file",file)
+
+let response=await fetch("/detect_disease",{
+method:"POST",
+body:formData
+})
+
+let data=await response.json()
+
+document.getElementById("disease_result").innerText =
+data.result || data.analysis
+
+}
+
+async function generateGuide(){
+
+let crop=document.getElementById("guide_crop").value
+let district=document.getElementById("guide_district").value
+
+let url=`/farming_guide?crop=${crop}&district=${district}`
+
+let response=await fetch(url,{
+method:"POST"
+})
+
+let data=await response.json()
+
+document.getElementById("guide_result").innerText =
+data.guide
+
+}
+
+</script>
+
+</body>
+</html>
