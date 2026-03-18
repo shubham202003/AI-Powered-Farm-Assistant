@@ -25,7 +25,9 @@ Create .env file:
 
 
 GROQ_API_KEY=your_key
+
 HF_TOKEN=your_key
+
 OPEN_WEATHER_KEY=your_key
 
 
