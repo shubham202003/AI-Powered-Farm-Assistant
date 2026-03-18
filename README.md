@@ -1,4 +1,4 @@
-FarmAI – AI Assistant for Farmers
+🌾 FarmAI – AI-Driven Crop Recommendation & Disease Detection System
 
 Features
 - Crop Recommendation using ML
