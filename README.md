@@ -1,34 +1,32 @@
-🌾 FarmAI – AI-Driven Crop Recommendation & Disease Detection System
+# 🌾 FarmAI – AI-Powered Crop & Disease Prediction System
 
-Features
-- Crop Recommendation using ML
-- Disease Detection from images
-- AI Farming Guide using LLM
-- Weather-based suggestions
+An intelligent agriculture assistant that helps farmers make better decisions using Machine Learning and Deep Learning.
 
-Tech Stack
-- FastAPI
-- Scikit-Learn
-- Vision AI
+---
 
+## 🚀 Features
 
-⚙️ Setup:-
+- 🌱 **Crop Recommendation** using Random Forest based on soil and environmental data  
+- 🦠 **Plant Disease Detection** using CNN (Transfer Learning – MobileNetV2)  
+- 🤖 **AI Farming Guide** for step-by-step crop practices  
+- 🌦️ **Weather-based Suggestions** for improved decision-making  
 
--->git clone https://github.com/shubham202003/AI-Powered-Farm-Assistant.git
+---
 
+## 🧠 Tech Stack
 
--->pip install -r requirements.txt
+- **Backend:** FastAPI  
+- **Machine Learning:** Scikit-learn (Random Forest)  
+- **Deep Learning:** TensorFlow, CNN (Transfer Learning)  
+- **AI Integration:** Groq API (LLM fallback)  
+- **Others:** HTML, CSS, JavaScript  
 
+---
 
--->Create .env file:
+## ⚙️ Setup & Installation
 
- 
-  HF_TOKEN=your_key
+### 1️⃣ Clone the repository
 
-  OPEN_WEATHER_KEY=your_key
-
-
--->Run project:
-
-
-  uvicorn app.main:app --reload
+```bash
+git clone https://github.com/shubham202003/AI-Powered-Farm-Assistant.git
+cd AI-Powered-Farm-Assistant
