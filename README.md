@@ -30,3 +30,28 @@ An intelligent agriculture assistant that helps farmers make better decisions us
 ```bash
 git clone https://github.com/shubham202003/AI-Powered-Farm-Assistant.git
 cd AI-Powered-Farm-Assistant
+
+---
+
+### 2️⃣ Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 3️⃣ Create `.env` file
+Create a `.env` file in the root directory and add:
+```env
+HF_TOKEN=your_key
+OPEN_WEATHER_KEY=your_key
+GROQ_API_KEY=your_key
+```
+
+### 4️⃣ Run the application
+```bash
+uvicorn app.main:app --reload
+```
+
+### 5️⃣ Open in browser
+```
+http://127.0.0.1:8000/ui
+```
