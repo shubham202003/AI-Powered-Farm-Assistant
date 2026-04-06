@@ -9,7 +9,6 @@ Features
 Tech Stack
 - FastAPI
 - Scikit-Learn
-- Groq LLM
 - Vision AI
 
 
@@ -23,8 +22,6 @@ Tech Stack
 
 -->Create .env file:
 
-
-  GROQ_API_KEY=your_key
  
   HF_TOKEN=your_key
 
