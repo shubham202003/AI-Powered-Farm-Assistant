@@ -30,8 +30,8 @@ An intelligent agriculture assistant that helps farmers make better decisions us
 ```bash
 git clone https://github.com/shubham202003/AI-Powered-Farm-Assistant.git
 cd AI-Powered-Farm-Assistant
+```
 
----
 
 ### 2️⃣ Install dependencies
 ```bash
