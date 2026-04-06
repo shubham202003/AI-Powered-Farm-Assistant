@@ -22,3 +22,11 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Dataset
+data/plant_disease/
+
+# Models
+models/
+*.h5
+*.pkl

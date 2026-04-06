@@ -59,4 +59,4 @@ async def detect_disease(file: UploadFile):
 
     result = analyze_crop_disease(image_bytes)
 
-    return {"analysis": result}
+    return result

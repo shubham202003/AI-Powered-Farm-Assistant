@@ -174,43 +174,34 @@ document.getElementById(section).style.display="block"
 
 }
 
-async function predictCrop(){
-
-let district=document.getElementById("district").value
-let soil_color=document.getElementById("soil_color").value
-let nitrogen=document.getElementById("nitrogen").value
-let phosphorus=document.getElementById("phosphorus").value
-let potassium=document.getElementById("potassium").value
-let ph=document.getElementById("ph").value
-let rainfall=document.getElementById("rainfall").value
-let temperature=document.getElementById("temperature").value
-
-let url=`/predict_crop?district=${district}&soil_color=${soil_color}&nitrogen=${nitrogen}&phosphorus=${phosphorus}&potassium=${potassium}&ph=${ph}&rainfall=${rainfall}&temperature=${temperature}`
-
-let response=await fetch(url,{method:"POST"})
-let data=await response.json()
-
-document.getElementById("crop_result").innerText =
-"Recommended Crop: " + data.recommended_crop
-
-}
-
 async function detectDisease(){
 
-let file=document.getElementById("image").files[0]
+let file = document.getElementById("image").files[0]
 
-let formData=new FormData()
-formData.append("file",file)
+let formData = new FormData()
+formData.append("file", file)
 
-let response=await fetch("/detect_disease",{
-method:"POST",
-body:formData
+try{
+
+let response = await fetch("/detect_disease", {
+method: "POST",
+body: formData
 })
 
-let data=await response.json()
+let data = await response.json()
 
-document.getElementById("disease_result").innerText =
-data.result || data.analysis
+console.log("API RESPONSE:", data)
+
+// ✅ FIX HERE
+document.getElementById("disease_result").innerHTML =
+"<b>Disease:</b> " + data.disease +
+"<br><b>Confidence:</b> " + (data.confidence * 100).toFixed(2) + "%"
+
+}catch(error){
+
+document.getElementById("disease_result").innerText = "Error detecting disease"
+
+}
 
 }
 

@@ -1,36 +1,49 @@
-import base64
-from groq import Groq
-from app.config import GROQ_API_KEY
+import numpy as np
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image
+import io
 
-client = Groq(api_key=GROQ_API_KEY)
+model = load_model("models/plant_disease_model.h5")
 
-MODEL = "meta-llama/llama-4-scout-17b-16e-instruct"
+class_names = [
+    "Pepper__bell___Bacterial_spot",
+    "Pepper__bell___healthy",
+    "Potato___Early_blight",
+    "Potato___Late_blight",
+    "Potato___healthy",
+    "Tomato_Bacterial_spot",
+    "Tomato_Early_blight",
+    "Tomato_Late_blight",
+    "Tomato_Leaf_Mold",
+    "Tomato_Septoria_leaf_spot",
+    "Tomato_Spider_mites_Two_spotted_spider_mite",
+    "Tomato_Target_Spot",
+    "Tomato_Tomato_YellowLeaf_Curl_Virus",
+    "Tomato_Tomato_mosaic_virus",
+    "Tomato_healthy"
+]
+
 
 def analyze_crop_disease(image_bytes):
 
-    image_base64 = base64.b64encode(image_bytes).decode("utf-8")
+    img = image.load_img(io.BytesIO(image_bytes), target_size=(224,224))
+    img_array = image.img_to_array(img) / 255.0
+    img_array = np.expand_dims(img_array, axis=0)
 
-    completion = client.chat.completions.create(
-        model=MODEL,
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "text",
-                        "text": "Identify the plant disease in this image and suggest treatment for farmers in simple language."
-                    },
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": f"data:image/jpeg;base64,{image_base64}"
-                        }
-                    }
-                ]
-            }
-        ],
-        temperature=0.2,
-        max_tokens=500
-    )
+    prediction = model.predict(img_array)
 
-    return completion.choices[0].message.content
+    confidence = float(np.max(prediction))
+    class_index = np.argmax(prediction)
+
+    # ✅ UNKNOWN CHECK FIRST
+    if confidence < 0.7:
+        return {
+            "disease": "Unknown plant / not in dataset",
+            "confidence": confidence
+        }
+
+    # ✅ NORMAL RETURN
+    return {
+        "disease": class_names[class_index],
+        "confidence": confidence
+    }
